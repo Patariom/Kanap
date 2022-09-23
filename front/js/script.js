@@ -22,7 +22,6 @@ async function fetchProducts() {
 
 }
 
-
 /** 
  * Create and display products on homepage
  * (from local API)
@@ -37,9 +36,8 @@ async function displayProducts() {
         const items = document.querySelector("#items");
 
         //Create contenair a
-        const productLink = document.createElement("a");
-        // productLink.href = new URL(document.location);
-        // // url.searchParams.set('id', [listProducts[i]._id]);
+        let productLink = document.createElement("a");
+        productLink.href = (`product.html?id=${product[i]._id}`);
         items.appendChild(productLink);
 
         //Create contenair article
