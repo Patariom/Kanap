@@ -57,7 +57,7 @@ displaySofa();
 
     //Put price
     let sofaPrice = document.querySelector("#price");
-    sofaPrice.textContent = sofa.price;
+    sofaPrice.textContent = parseInt(sofa.price);
 
     //Put description
     let sofaDescription = document.querySelector("#description");
@@ -76,3 +76,4 @@ displaySofa();
     console.log("Le canapé sélectionné est bien affiché !")
 
 };
+
