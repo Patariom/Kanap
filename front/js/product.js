@@ -136,7 +136,7 @@ orderBtn.addEventListener("click", () => {
                 else {
                 localStorage.setItem("cart", JSON.stringify(existingCart));
                 console.log("La quantité de ce canapé a été mise à jour.")
-                resetForm();
+                confirmOrder();
                 }
             }
             //There's an existing cart but no similar product
@@ -145,7 +145,7 @@ orderBtn.addEventListener("click", () => {
                 existingCart.push(sofaOption);
                 localStorage.setItem("cart", JSON.stringify(existingCart));
                 console.log("Le produit a bien été ajouté au panier.")
-                resetForm();
+                confirmOrder();
             }
         }
         //There's no key "cart" in Local Storage, we add the key and then push the order
@@ -154,19 +154,26 @@ orderBtn.addEventListener("click", () => {
         existingCart.push(sofaOption);
         localStorage.setItem("cart", JSON.stringify(existingCart))
         console.log("Le produit a bien été ajouté au panier.")
-        resetForm();
+        confirmOrder();
     }
 }
 
 });
 
 
+
+
 /** 
-* Reset the form without reloading the page after click on Order Button
+* Confirm that order is OK and reset form
 *
 */
-function resetForm() {
+function confirmOrder() {
+    let container = document.querySelector("article")
+    let orderConfirmation = document.createElement("div")
+    orderConfirmation.innerHTML = "<div style='margin-top: 25px'>Le produit a bien été ajouté au panier.</div>";
+    container.append(orderConfirmation);
     document.querySelector("#colors").value = "";
     document.querySelector("#quantity").value = 0;
 }
+
 
