@@ -96,7 +96,7 @@ let orderBtn = document.querySelector("#addToCart");
 */
 orderBtn.addEventListener("click", () => {
     //Set selected sofa options
-    let sofaOption = {
+    var sofaOption = {
         id: idSofa,
         color: document.querySelector("#colors").value,
         quantity: parseInt(document.querySelector("#quantity").value),
@@ -116,7 +116,7 @@ orderBtn.addEventListener("click", () => {
     //Product is valid, now we're checking if a cart already exists
     else {
 
-        let existingCart = JSON.parse(localStorage.getItem("cart"));
+        var existingCart = JSON.parse(localStorage.getItem("cart"));
 
         //If there is already a key "cart" in Local Storage
         if (existingCart) {
@@ -136,6 +136,7 @@ orderBtn.addEventListener("click", () => {
                 else {
                 localStorage.setItem("cart", JSON.stringify(existingCart));
                 console.log("La quantité de ce canapé a été mise à jour.")
+                resetForm();
                 }
             }
             //There's an existing cart but no similar product
@@ -144,6 +145,7 @@ orderBtn.addEventListener("click", () => {
                 existingCart.push(sofaOption);
                 localStorage.setItem("cart", JSON.stringify(existingCart));
                 console.log("Le produit a bien été ajouté au panier.")
+                resetForm();
             }
         }
         //There's no key "cart" in Local Storage, we add the key and then push the order
@@ -152,9 +154,19 @@ orderBtn.addEventListener("click", () => {
         existingCart.push(sofaOption);
         localStorage.setItem("cart", JSON.stringify(existingCart))
         console.log("Le produit a bien été ajouté au panier.")
+        resetForm();
     }
 }
 
 });
 
+
+/** 
+* Reset the form without reloading the page after click on Order Button
+*
+*/
+function resetForm() {
+    document.querySelector("#colors").value = "";
+    document.querySelector("#quantity").value = 0;
+}
 
