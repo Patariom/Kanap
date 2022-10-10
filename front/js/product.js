@@ -91,12 +91,13 @@ let orderBtn = document.querySelector("#addToCart");
 * Add an on-click event to put the order in Local Storage 
 *
 * The order will be fetched in cart.
-* This event uses several functions. SHOULD BE REFACTORED BC NOT DRY²
+* This event uses several functions.
 *
 */
 orderBtn.addEventListener("click", () => {
+
     //Set selected sofa options
-    var sofaOption = {
+    let sofaOption = {
         id: idSofa,
         color: document.querySelector("#colors").value,
         quantity: parseInt(document.querySelector("#quantity").value),
@@ -104,10 +105,12 @@ orderBtn.addEventListener("click", () => {
 
     //Check if order is valid with a chosen color and a quantity between 1 and 100
     if ((sofaOption.color == "") || (sofaOption.quantity <= 0) || (sofaOption.quantity > 100)) {
+
         //Order is not valid : the client is alerted by a pop-up depending on the problem
         if (sofaOption.color == "") {
             alert("Merci de sélectionner une couleur !")
         }
+
         else {
             alert("Merci de sélectionner une quantité comprise entre 0 et 100 !")
         }
@@ -116,51 +119,66 @@ orderBtn.addEventListener("click", () => {
     //Product is valid, now we're checking if a cart already exists
     else {
 
-        var existingCart = JSON.parse(localStorage.getItem("cart"));
+        let existingCart = JSON.parse(localStorage.getItem("cart"));
 
         //If there is already a key "cart" in Local Storage
         if (existingCart) {
             //We are checking if in the existing cart, a product has already the same idea and color option
             let foundItem = existingCart.find(p => (p.id == sofaOption.id) && (p.color == sofaOption.color));
-    
+
             //There's already a product with the same options
             if (foundItem != undefined) {
                 //We update the quantity
                 console.log("Un produit similaire a été trouvé dans le panier.")
                 foundItem.quantity = parseInt(foundItem.quantity += sofaOption.quantity);
+
                 //If the new quantity is more than 100, we can't proceed
-                if(foundItem.quantity > 100) {
+                if (foundItem.quantity > 100) {
                     alert("La quantité totale de ce produit ne peut pas être supérieure à 100, merci de corriger !")
                 }
+
                 //If it's less than 100, the existing entry in Local Storage is updated 
                 else {
-                localStorage.setItem("cart", JSON.stringify(existingCart));
-                console.log("La quantité de ce canapé a été mise à jour.")
-                confirmOrder();
+                    saveCart(existingCart)
                 }
             }
+
             //There's an existing cart but no similar product
             else {
                 //We add the product in the cart
-                existingCart.push(sofaOption);
-                localStorage.setItem("cart", JSON.stringify(existingCart));
-                console.log("Le produit a bien été ajouté au panier.")
-                confirmOrder();
+                addToCart(existingCart, sofaOption)
             }
         }
+
         //There's no key "cart" in Local Storage, we add the key and then push the order
         else {
-        existingCart = [];
-        existingCart.push(sofaOption);
-        localStorage.setItem("cart", JSON.stringify(existingCart))
-        console.log("Le produit a bien été ajouté au panier.")
-        confirmOrder();
+            existingCart = [];
+            addToCart(existingCart, sofaOption)
+        }
     }
-}
 
 });
 
+/** 
+* Save the item to cart and confirm order
+*
+*/
+function saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart))
+    console.log("Le produit a bien été ajouté au panier.")
+    confirmOrder()
 
+}
+
+/** 
+* Push the item to the array in Local Storage
+*
+*/
+function addToCart(cart, item) {
+    cart.push(item)
+    saveCart(cart)
+
+}
 
 
 /** 
@@ -168,10 +186,10 @@ orderBtn.addEventListener("click", () => {
 *
 */
 function confirmOrder() {
-    let container = document.querySelector("article")
+    let sofaInfos = document.querySelector("article")
     let orderConfirmation = document.createElement("div")
-    orderConfirmation.innerHTML = "<div style='margin-top: 25px'>Le produit a bien été ajouté au panier.</div>";
-    container.append(orderConfirmation);
+    orderConfirmation.innerHTML = "<p style='margin-top: 25px'>Le produit a bien été ajouté au panier.</p>";
+    sofaInfos.append(orderConfirmation);
     document.querySelector("#colors").value = "";
     document.querySelector("#quantity").value = 0;
 }
