@@ -1,6 +1,4 @@
 //-------------------------------------- DISPLAY PRODUCT IN CART --------------------------------------
-displayCart()
-
 
 //Get cart
 let cart = JSON.parse(localStorage.getItem("cart"));
@@ -10,6 +8,7 @@ let cart = JSON.parse(localStorage.getItem("cart"));
 let cartItems = document.querySelector("#cart__items");
 
 
+displayCart()
 
 /** 
  * Fetch right sofa according to the ID
