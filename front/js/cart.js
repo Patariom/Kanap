@@ -146,30 +146,101 @@ function displayCart() {
 
 displayCart();
 
+//-------------------------------------- END OF DISPLAY CART --------------------------------------
+
+
+
+
 
 //-------------------------------------- DISPLAY TOTAL PRICE AND QTY --------------------------------------
 
 ////Display total quantity
 
-//Select total quantity container
-let totalQuantity = document.querySelector("#totalQuantity");
+getTotalQuantity()
 
-//Calculate quantity with reduce function
-const totalArticles = cart.reduce((a, b) => a + b.quantity, 0);
+function getTotalQuantity() {
 
-//Display number 
-totalQuantity.textContent = totalArticles;
+    //Select total quantity container
+    let totalQuantity = document.querySelector("#totalQuantity");
+
+    //Calculate quantity with reduce function
+    const totalArticles = cart.reduce((a, b) => a + b.quantity, 0);
+
+    //Display number 
+    totalQuantity.textContent = totalArticles;
+
+    //Return number to use in displayQtyInNavBar()
+    return totalArticles;
+}
+
 
 //Put total quantity number next to the cart icon
 //Should be put on a separate JS file to work on all pages
+
+displayQtyInNavBar();
+
 function displayQtyInNavBar() {
+
+    //Select nav bar
     let navBar = document.querySelectorAll("nav a li");
+
+    //Select second li item of nav bar
     let cartIcon = navBar[1];
+
+    //Create an
     let totalInCartIcon = document.createElement("span");
     cartIcon.append(totalInCartIcon);
-    totalInCartIcon.textContent = "(" + totalArticles + ")";
+    totalInCartIcon.textContent = "(" + getTotalQuantity() + ")";
 }
-displayQtyInNavBar();
+
+
+
+
+////Display total price
+
+getTotalPrice();
+
+async function getTotalPrice() {
+
+    //Select total price container
+    let totalPriceContainer = document.querySelector("#totalPrice");
+
+    //Create an empty array
+    let priceArray = [];
+
+    //Create a loop to calculate each item total price
+     for (let a of cart) {
+        //Set the variables 
+        let idArticle = a.id;
+        let quantityArticle = parseInt(a.quantity);
+    
+        //Fetch the price from  API
+        let article = await fetchSofa(idArticle);
+        let priceArticle = parseInt(article.price);
+    
+        //Calculate the total price by articles
+        totalPriceByArticle = priceArticle * quantityArticle;
+    
+        //Push this number into an array
+        priceArray.push(totalPriceByArticle);
+    
+    };
+
+    //Reduce the array in a sum
+    let totalPriceSum = priceArray.reduce((c, d) => c + d, 0);
+    
+    //Display the price
+    totalPriceContainer.textContent = totalPriceSum;
+}
+
+
+//-------------------------------------- END OF DISPLAY TOTAL PRICE AND QTY --------------------------------------
+
+
+
+
+
+
 
 
 
