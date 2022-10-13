@@ -186,12 +186,7 @@ function addToCart(cart, item) {
 *
 */
 function confirmOrder() {
-    let sofaInfos = document.querySelector("article")
-    let orderConfirmation = document.createElement("div")
-    orderConfirmation.innerHTML = "<p style='margin-top: 25px'>Le produit a bien été ajouté au panier.</p>";
-    sofaInfos.append(orderConfirmation);
-    document.querySelector("#colors").value = "";
-    document.querySelector("#quantity").value = 0;
+    let addToCartConf = document.querySelector("#addToCart");
+    addToCartConf.textContent = "Le produit a bien été ajouté au panier !";
+    setTimeout(function(){addToCartConf.textContent = "Ajouter au panier";},3000)
 }
-
-
