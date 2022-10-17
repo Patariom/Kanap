@@ -1,8 +1,12 @@
-//-------------------------------------- DISPLAY PRODUCT IN CART --------------------------------------
 
 //Get cart
 let cart = JSON.parse(localStorage.getItem("cart"));
 
+
+
+
+
+//-------------------------------------- DISPLAY PRODUCT IN CART --------------------------------------
 
 /** 
  * Fetch right sofa according to the ID
@@ -35,10 +39,13 @@ async function fetchSofa(idSofa) {
  *
  */
 
+displayCart();
+
 function displayCart() {
 
     //Select cart container
     let cartItems = document.querySelector("#cart__items");
+
 
     if (cart) {
         cart.forEach(async i => {
@@ -123,11 +130,14 @@ function displayCart() {
             articleDeleteContainer.className = "cart__item__content__settings__delete";
 
             //Create the delete text
-            let articleDeleteOption = document.createElement("p");
-            articleDeleteContainer.appendChild(articleDeleteOption);
-            articleDeleteOption.className = "deleteItem";
-            articleDeleteOption.textContent = "Supprimer";
-        })
+            let articleDeleteButton= document.createElement("p");
+            articleDeleteContainer.appendChild(articleDeleteButton);
+            articleDeleteButton.className = "deleteItem";
+            articleDeleteButton.textContent = "Supprimer";
+
+            });
+
+        
 
     } else {
         //Display a message saying that cart is empty
@@ -142,9 +152,10 @@ function displayCart() {
         let orderForm = document.querySelector(".cart__order");
         orderForm.textContent = "";
     }
+
 }
 
-displayCart();
+
 
 //-------------------------------------- END OF DISPLAY CART --------------------------------------
 
@@ -156,7 +167,7 @@ displayCart();
 
 ////Display total quantity
 
-getTotalQuantity()
+getTotalQuantity() 
 
 function getTotalQuantity() {
 
@@ -177,7 +188,7 @@ function getTotalQuantity() {
 //Put total quantity number next to the cart icon
 //Should be put on a separate JS file to work on all pages
 
-displayQtyInNavBar();
+displayQtyInNavBar()
 
 function displayQtyInNavBar() {
 
@@ -198,7 +209,7 @@ function displayQtyInNavBar() {
 
 ////Display total price
 
-getTotalPrice();
+getTotalPrice()
 
 async function getTotalPrice() {
 
@@ -228,17 +239,10 @@ async function getTotalPrice() {
 
     //Reduce the array in a sum
     let totalPriceSum = priceArray.reduce((c, d) => c + d, 0);
-    
-    //Display the price
-    totalPriceContainer.textContent = totalPriceSum;
+
+    //Display the price with the right formating
+    totalPriceContainer.textContent = new Intl.NumberFormat('fr-FR').format(totalPriceSum);
 }
-
-
-//-------------------------------------- END OF DISPLAY TOTAL PRICE AND QTY --------------------------------------
-
-
-
-
 
 
 
