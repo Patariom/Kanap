@@ -95,7 +95,7 @@ function displayCart() {
             //Create and Fetch the article price from API
             let articlePrice = document.createElement("p");
             articleInfoDescription.appendChild(articlePrice);
-            articlePrice.textContent = article.price + " €";
+            articlePrice.textContent = new Intl.NumberFormat('fr-FR', {style:'currency', currency: 'EUR', maximumFractionDigits: 0}).format(article.price); 
 
             //Create a div which will be used to display the settings
             let articleInfoSettings = document.createElement("div");
@@ -134,24 +134,32 @@ function displayCart() {
             articleDeleteContainer.appendChild(articleDeleteButton);
             articleDeleteButton.className = "deleteItem";
             articleDeleteButton.textContent = "Supprimer";
-
+            articleDeleteButton.addEventListener("click", function() {
+                deleteArticle(idArticle, colorArticle) 
             });
-
         
+        })
+
+    getTotalQuantity();
+
+    displayQtyInNavBar();
+        
+    getTotalPrice();
 
     } else {
         //Display a message saying that cart is empty
         let emptyBasket = document.querySelector("h1")
         emptyBasket.textContent = "Votre panier est vide :(";
 
-        //hide quantity and price items
+        //Hide quantity and price items
         let infoPrice = document.querySelector(".cart__price");
         infoPrice.textContent = "";
 
-        //hide order form
+        //Hide order form
         let orderForm = document.querySelector(".cart__order");
         orderForm.textContent = "";
     }
+
 
 }
 
@@ -165,9 +173,13 @@ function displayCart() {
 
 //-------------------------------------- DISPLAY TOTAL PRICE AND QTY --------------------------------------
 
-////Display total quantity
+/** 
+ * Calculate quantity of all items in cart 
+ * with reduce method
+ *
+ */
 
-getTotalQuantity() 
+
 
 function getTotalQuantity() {
 
@@ -185,10 +197,12 @@ function getTotalQuantity() {
 }
 
 
-//Put total quantity number next to the cart icon
-//Should be put on a separate JS file to work on all pages
+/** 
+ * Calculate total
+ *
+ */
 
-displayQtyInNavBar()
+
 
 function displayQtyInNavBar() {
 
@@ -206,10 +220,14 @@ function displayQtyInNavBar() {
 
 
 
+/** 
+ * Put total quantity number next to the cart icon
+ * For it to work on all pages, it should be put in a separate JS file and called on each page
+ *
+ */
 
-////Display total price
 
-getTotalPrice()
+
 
 async function getTotalPrice() {
 
@@ -243,6 +261,42 @@ async function getTotalPrice() {
     //Display the price with the right formating
     totalPriceContainer.textContent = new Intl.NumberFormat('fr-FR').format(totalPriceSum);
 }
+
+
+//-------------------------------------- END OF DISPLAY TOTAL PRICE AND QTY --------------------------------------
+
+
+
+//-------------------------------------- REMOVE OR UPDATE QUANTITY --------------------------------------
+
+
+
+
+function deleteArticle(idArticle, colorArticle) {
+
+    //Check if user did not click by mistake
+    if(confirm("Souhaitez-vous vraiment supprimer cet article ?") == true) {
+        //Fetch product ID and product color
+        let deletedArticleID = idArticle;
+        let deletedArticleColor = colorArticle; 
+
+        //Use filter to keep only the items that don't have the same color and id
+        cart = cart.filter(i => (i.id !== deletedArticleID) && (i.color !== deletedArticleColor));
+        
+        //Save the cart 
+        localStorage.setItem("cart", JSON.stringify(cart));
+  
+        //If cart is empty, remove the cart key in local storage
+        if (cart.length ==0 ) {
+            localStorage.removeItem("cart");
+        }
+
+        //
+        location.reload();
+    }
+}
+
+
 
 
 
