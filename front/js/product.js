@@ -60,7 +60,7 @@ async function displaySofa() {
 
     //Put price
     let sofaPrice = document.querySelector("#price");
-    sofaPrice.textContent = parseInt(sofa.price);
+    sofaPrice.textContent = new Intl.NumberFormat('fr-FR').format(parseInt(sofa.price));
 
     //Put description
     let sofaDescription = document.querySelector("#description");
