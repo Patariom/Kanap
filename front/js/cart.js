@@ -135,7 +135,7 @@ function displayCart() {
             articleDeleteButton.className = "deleteItem";
             articleDeleteButton.textContent = "Supprimer";
             articleDeleteButton.addEventListener("click", function() {
-                deleteArticle(idArticle, colorArticle) 
+                deleteArticle(idArticle, colorArticle) ;
             });
         
         })
@@ -179,8 +179,6 @@ function displayCart() {
  *
  */
 
-
-
 function getTotalQuantity() {
 
     //Select total quantity container
@@ -198,11 +196,10 @@ function getTotalQuantity() {
 
 
 /** 
- * Calculate total
+ * Put total quantity number next to the cart icon
+ * For it to work on all pages, it should be put in a separate JS file and called on each page
  *
  */
-
-
 
 function displayQtyInNavBar() {
 
@@ -221,13 +218,10 @@ function displayQtyInNavBar() {
 
 
 /** 
- * Put total quantity number next to the cart icon
- * For it to work on all pages, it should be put in a separate JS file and called on each page
+ * Calculate price of all the items in cart
+ * with reduce method
  *
  */
-
-
-
 
 async function getTotalPrice() {
 
@@ -270,7 +264,11 @@ async function getTotalPrice() {
 //-------------------------------------- REMOVE OR UPDATE QUANTITY --------------------------------------
 
 
-
+/** 
+ * Create a delete action to remove select item in cart
+ * It's combined with an addeventlistener in displaySofa()
+ *
+ */
 
 function deleteArticle(idArticle, colorArticle) {
 
@@ -280,19 +278,21 @@ function deleteArticle(idArticle, colorArticle) {
         let deletedArticleID = idArticle;
         let deletedArticleColor = colorArticle; 
 
+
         //Use filter to keep only the items that don't have the same color and id
-        cart = cart.filter(i => (i.id !== deletedArticleID) && (i.color !== deletedArticleColor));
-        
+        cart = cart.filter(i => (i.id !== deletedArticleID) || (i.color !== deletedArticleColor));
+  
         //Save the cart 
         localStorage.setItem("cart", JSON.stringify(cart));
-  
+
         //If cart is empty, remove the cart key in local storage
         if (cart.length ==0 ) {
             localStorage.removeItem("cart");
+            
         }
 
-        //
         location.reload();
+
     }
 }
 
