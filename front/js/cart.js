@@ -2,8 +2,7 @@
 //Get cart
 let cart = JSON.parse(localStorage.getItem("cart"));
 
-
-
+let cartItems = document.querySelector("#cart__items");
 
 
 //-------------------------------------- DISPLAY PRODUCT IN CART --------------------------------------
@@ -49,9 +48,12 @@ function displayCart() {
 
     if (cart) {
         cart.forEach(async i => {
+            
             //Select and Fetch Sofa according to ID
             let idArticle = i.id;
             let colorArticle = i.color;
+            let quantityArticle = i.quantity;
+            
             let article = await fetchSofa(idArticle);
 
             //Create an article in HTML to display the item
@@ -119,10 +121,37 @@ function displayCart() {
             articleQuantityInput.type = "number";
             articleQuantityInput.name = "itemQuantity";
             articleQuantityInput.min = "1";
-            articleQuantityInput.max = "100";
+            articleQuantityInput.max = "100";        
+            // articleQuantityInput.addEventListener("change", (e)=> {
+
+            //     let articleID = idArticle;
+            //     let articleColor = colorArticle; 
+            //     let article = cart.find(i => (i.id == articleID ) && (i.color == articleColor));
+            //     let articleNewQuantity = parseInt(e.target.value);
+
+            //     if(article && (articleNewQuantity > 0 && articleNewQuantity <= 100)) {
+            //         article.quantity = articleNewQuantity;
+            //         localStorage.setItem("cart", JSON.stringify(cart));
+
+            //         getTotalQuantity();
+
+            //         displayQtyInNavBar();
+                        
+            //         getTotalPrice();
+            //     }
+            //     else if(articleNewQuantity <=0){
+            //         deleteArticle(articleID, colorArticle)
+            //     }
+            //     else {
+            //         alert("Merci de renseigner une quantité comprise entre 1 et 100 !");
+            //         articleNewQuantity = article.quantity;
+            //         location.reload();
+            //     }
+            
+            // })
 
             //Create and Fetch the article quantity from Local Storage
-            articleQuantityInput.value = parseInt(i.quantity);
+            articleQuantityInput.value = parseInt(quantityArticle);
 
             //Create a div which will be used to display the delete option
             let articleDeleteContainer = document.createElement("div");
@@ -134,10 +163,12 @@ function displayCart() {
             articleDeleteContainer.appendChild(articleDeleteButton);
             articleDeleteButton.className = "deleteItem";
             articleDeleteButton.textContent = "Supprimer";
-            articleDeleteButton.addEventListener("click", function() {
-                deleteArticle(idArticle, colorArticle) ;
+            articleDeleteButton.addEventListener("click", (event)=> {
+                deleteArticle(event);
             });
-        
+
+
+    
         })
 
     getTotalQuantity();
@@ -160,6 +191,9 @@ function displayCart() {
         orderForm.textContent = "";
     }
 
+
+
+    
 
 }
 
@@ -202,17 +236,17 @@ function getTotalQuantity() {
  */
 
 function displayQtyInNavBar() {
-
+    
     //Select nav bar
     let navBar = document.querySelectorAll("nav a li");
 
     //Select second li item of nav bar
     let cartIcon = navBar[1];
 
-    //Create an
     let totalInCartIcon = document.createElement("span");
     cartIcon.append(totalInCartIcon);
     totalInCartIcon.textContent = "(" + getTotalQuantity() + ")";
+        
 }
 
 
@@ -270,14 +304,22 @@ async function getTotalPrice() {
  *
  */
 
-function deleteArticle(idArticle, colorArticle) {
+function deleteArticle(event) {
 
     //Check if user did not click by mistake
     if(confirm("Souhaitez-vous vraiment supprimer cet article ?") == true) {
-        //Fetch product ID and product color
-        let deletedArticleID = idArticle;
-        let deletedArticleColor = colorArticle; 
 
+        //Select corresponding article
+        let deletedArticle = event.target.closest("article");        
+
+        //Fetch product ID and product color
+        let deletedArticleID = deletedArticle.getAttribute("data-id");
+        let deletedArticleColor = deletedArticle.getAttribute("data-color"); 
+     
+
+        //Remove the article from the DOM
+        deletedArticle.remove();
+   
 
         //Use filter to keep only the items that don't have the same color and id
         cart = cart.filter(i => (i.id !== deletedArticleID) || (i.color !== deletedArticleColor));
@@ -287,11 +329,12 @@ function deleteArticle(idArticle, colorArticle) {
 
         //If cart is empty, remove the cart key in local storage
         if (cart.length ==0 ) {
-            localStorage.removeItem("cart");
-            
+            localStorage.removeItem("cart");  
         }
 
-        location.reload();
+        getTotalQuantity();
+      
+        getTotalPrice();
 
     }
 }
@@ -299,6 +342,8 @@ function deleteArticle(idArticle, colorArticle) {
 
 
 
+//-------------------------------------- END OF REMOVE OR UPDATE QUANTITY --------------------------------------
 
 
 
+//-------------------------------------- FORM MANAGEMENT --------------------------------------
