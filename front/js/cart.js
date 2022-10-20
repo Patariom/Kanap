@@ -122,33 +122,12 @@ function displayCart() {
             articleQuantityInput.name = "itemQuantity";
             articleQuantityInput.min = "1";
             articleQuantityInput.max = "100";        
-            // articleQuantityInput.addEventListener("change", (e)=> {
 
-            //     let articleID = idArticle;
-            //     let articleColor = colorArticle; 
-            //     let article = cart.find(i => (i.id == articleID ) && (i.color == articleColor));
-            //     let articleNewQuantity = parseInt(e.target.value);
+            //Add the Update Quantity function Function for each Input
+            articleQuantityInput.addEventListener("change", (event)=> {
+                updateQuantity(event)
+            });
 
-            //     if(article && (articleNewQuantity > 0 && articleNewQuantity <= 100)) {
-            //         article.quantity = articleNewQuantity;
-            //         localStorage.setItem("cart", JSON.stringify(cart));
-
-            //         getTotalQuantity();
-
-            //         displayQtyInNavBar();
-                        
-            //         getTotalPrice();
-            //     }
-            //     else if(articleNewQuantity <=0){
-            //         deleteArticle(articleID, colorArticle)
-            //     }
-            //     else {
-            //         alert("Merci de renseigner une quantité comprise entre 1 et 100 !");
-            //         articleNewQuantity = article.quantity;
-            //         location.reload();
-            //     }
-            
-            // })
 
             //Create and Fetch the article quantity from Local Storage
             articleQuantityInput.value = parseInt(quantityArticle);
@@ -163,12 +142,12 @@ function displayCart() {
             articleDeleteContainer.appendChild(articleDeleteButton);
             articleDeleteButton.className = "deleteItem";
             articleDeleteButton.textContent = "Supprimer";
+
+            //Add the Delete Function for each Button
             articleDeleteButton.addEventListener("click", (event)=> {
                 deleteArticle(event);
             });
 
-
-    
         })
 
     getTotalQuantity();
@@ -339,7 +318,40 @@ function deleteArticle(event) {
     }
 }
 
+/** 
+ * Update quantity
+ *
+ */
+function updateQuantity(event) {
 
+    //Select corresponding article
+    let modifiedArticle = event.target.closest("article");      
+
+    let modifiedArticleId = modifiedArticle.getAttribute("data-id");
+    let modifiedArticleColor  = modifiedArticle.getAttribute("data-color");
+
+    let article = cart.find(i => (i.id == modifiedArticleId) && (i.color == modifiedArticleColor));
+
+
+    let articleNewQuantity = parseInt(event.target.value);
+
+    if(article && (articleNewQuantity > 0 && articleNewQuantity <= 100)) {
+        article.quantity = articleNewQuantity;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        getTotalQuantity();
+      
+        getTotalPrice();
+    }
+    else if(articleNewQuantity <=0){
+        deleteArticle(event);
+    }
+    else {
+        alert("Merci de renseigner une quantité comprise entre 1 et 100 !");
+        event.target.value = article.quantity;
+
+    }
+};
+    
 
 
 //-------------------------------------- END OF REMOVE OR UPDATE QUANTITY --------------------------------------
