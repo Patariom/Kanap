@@ -185,29 +185,6 @@ function addToCart(cart, item) {
 * Confirm that order is OK and reset form
 *
 */
-// function confirmOrder() {
-
-//     //Select container
-//     let sofaInfos = document.querySelector("article")
-
-//     //Create a div that will display the message
-//     let orderConfirmation = document.createElement("div")
-
-//     //Create the message 
-//     orderConfirmation.innerHTML = "<p style='margin-top: 25px'>Le produit a bien été ajouté au panier !</p>";
-    
-//     //Insert the div
-//     sofaInfos.append(orderConfirmation);
-
-//     //Reset form
-//     document.querySelector("#colors").value = "";
-//     document.querySelector("#quantity").value = 0;
-
-//     //Set interval so the message only appears for 4s
-//     setTimeout(function(){orderConfirmation.style.display="none";},4000)
-    
-// }
-
 
 function confirmOrder() {
     //Select Button
