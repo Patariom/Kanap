@@ -222,6 +222,7 @@ function displayQtyInNavBar() {
     //Select second li item of nav bar
     let cartIcon = navBar[1];
 
+    
     let totalInCartIcon = document.createElement("span");
     cartIcon.append(totalInCartIcon);
     totalInCartIcon.textContent = "(" + getTotalQuantity() + ")";
@@ -312,7 +313,9 @@ function deleteArticle(event) {
         }
 
         getTotalQuantity();
-      
+
+        displayQtyInNavBar();
+    
         getTotalPrice();
 
     }
@@ -341,6 +344,8 @@ function updateQuantity(event) {
         getTotalQuantity();
       
         getTotalPrice();
+
+        displayQtyInNavBar();
     }
     else if(articleNewQuantity <=0){
         deleteArticle(event);
@@ -354,8 +359,149 @@ function updateQuantity(event) {
     
 
 
+
 //-------------------------------------- END OF REMOVE OR UPDATE QUANTITY --------------------------------------
 
 
 
-//-------------------------------------- FORM MANAGEMENT --------------------------------------
+//-------------------------------------- FORM MANAGEMENT ----------------------------------------------------------
+
+//Select the differents inputs of the form
+
+let firstName = document.querySelector("#firstName");
+
+let lastName = document.querySelector("#lastName");
+
+let adress = document.querySelector("#address");
+
+let city = document.querySelector("#city");
+
+let email = document.querySelector("#email")
+
+
+//Create a set of regex rules
+var regexClassic = new RegExp(/^[a-z çàâäéèêëïîôöùûüÿæœ -]{2,90}$/, "i");
+var regexAdress = new RegExp(/^[a-z çàâäéèêëïîôöùûüÿæœ '",;\- \d]{2,125}$/, "i");
+var regexEmail = new RegExp(/^[\w\-.]+@[\w\-.]+\.[\w]{2,6}$/, "i");
+
+
+//Create the values of input
+let fistNameValue, lastNameValue, adressValue, cityValue, emailValue;
+
+
+//List to each input to see if they're correct
+//First Name
+firstName.addEventListener("blur", (e)=> {
+
+    let errorMsgFirstName = document.querySelector("#firstNameErrorMsg");
+
+    if (e.target.value.match(regexClassic)) {
+        firstName.style.border = "2px solid green";
+        errorMsgFirstName.textContent = "";
+        let firstNameValue = e.target.value;
+        console.log(firstNameValue);
+
+    } else {
+        firstName.style.border = "2px solid red";
+        errorMsgFirstName.textContent = "Le prénom renseigné contient des caractères non autorisés ou ne respecte pas la limite de taille (entre 2 et 35 caractères)."
+    }
+});
+
+//Last Name
+lastName.addEventListener("blur", (e)=> {
+
+    let errorMsgLastName = document.querySelector("#lastNameErrorMsg");
+
+    if (e.target.value.match(regexClassic)) {
+        lastName.style.border = "2px solid green";
+        errorMsgLastName.textContent = "";
+        let lastNameValue = e.target.value;
+        console.log(lastNameValue);
+
+    } else {
+        lastName.style.border = "2px solid red";
+        errorMsgLastName.textContent = "Le nom renseigné contient des caractères non autorisés ou ne respecte pas la limite de taille (entre 2 et 35 caractères)."
+    }
+});
+
+//Adress
+adress.addEventListener("blur", (e)=> {
+
+    let errorMsgAdress = document.querySelector("#addressErrorMsg");
+
+    if (e.target.value.match(regexAdress)) {
+        adress.style.border = "2px solid green";
+        errorMsgAdress.textContent = "";
+        let adressValue = e.target.value;
+        console.log(adressValue);
+
+    } else {
+        adress.style.border = "2px solid red";
+        errorMsgAdress.textContent = "L'adresse renseignée contient des caractères non autorisés."
+    }
+});
+
+//Ville
+city.addEventListener("blur", (e)=> {
+
+    let errorMsgCity = document.querySelector("#cityErrorMsg");
+
+    if (e.target.value.match(regexAdress)) {
+        city.style.border = "2px solid green";
+        errorMsgCity.textContent = "";
+        let cityValue = e.target.value;
+        console.log(cityValue);
+
+    } else {
+        adress.style.border = "2px solid red";
+        errorMsgCity.textContent = "La ville renseignée contient des caractères non autorisés."
+    }
+});
+
+
+//Email
+email.addEventListener("blur", (e)=> {
+
+    let errorMsgEmail = document.querySelector("#emailErrorMsg");
+
+    if (e.target.value.match(regexEmail)) {
+        email.style.border = "2px solid green";
+        errorMsgEmail.textContent = "";
+        let emailValue = e.target.value;
+        console.log(emailValue);
+
+    } else {
+        email.style.border = "2px solid red";
+        errorMsgEmail.textContent = "Le champ renseigné ne correspond pas au format valide d'une adresse email : texte@nomdomaine.txt"
+    }
+});
+
+
+
+//Create a personnalized constructor for the client that contains its personnal info and its order
+//Or just an object ?
+// function Client(firstName, lastName, adress, city, email, order) {
+//     this.firstName = firstName;
+//     this.lastName = lastName;
+//     this.adress = adress;
+//     this.city = city;
+//     this.email = email;
+
+//     this.order = order;
+// }
+
+//Select Btn
+let orderBtn = document.querySelector("#order");
+
+//Add a listener function to the btn
+// orderBtn.addEventListener("click", ()=> {
+//     let client = new Client(
+//         document.querySelector("#firstName").value,
+//         document.querySelector("#lastName").value,
+//         document.querySelector("#address").value,
+//         document.querySelector("#city").value,
+//         document.querySelector("#email").value,
+//         )
+//     console.log(client);
+// })
+
