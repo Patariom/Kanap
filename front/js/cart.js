@@ -5,12 +5,102 @@ let cart = JSON.parse(localStorage.getItem("cart"));
 let cartItems = document.querySelector("#cart__items");
 
 
+
+//-------------------------------------- DISPLAY TOTAL PRICE AND QTY --------------------------------------
+
+//Create a span to display quantity near cart icon in nav bar
+//Select nav bar
+let navBar = document.querySelectorAll("nav a li");
+//Select second li item of nav bar
+let cartIcon = navBar[1];
+let totalInCartIcon = document.createElement("span");
+cartIcon.append(totalInCartIcon);
+
+
+/** 
+ * Calculate quantity of all items in cart 
+ * with reduce method
+ *
+ */
+
+function getTotalQuantity() {
+
+    //Select total quantity container
+    let totalQuantity = document.querySelector("#totalQuantity");
+
+    //Calculate quantity with reduce function
+    const totalArticles = cart.reduce((a, b) => a + b.quantity, 0);
+
+    //Display number in cart recap
+    totalQuantity.textContent = totalArticles;
+
+    //Return number to use in displayQtyInNavBar()
+    return totalArticles;
+}
+
+
+/** 
+ * Put total quantity number next to the cart icon
+ * For it to work on all pages, it should be put in a separate JS file and called on each page
+ *
+ */
+
+function displayQtyInNavBar() {
+    totalInCartIcon.textContent = "(" + getTotalQuantity() + ")"; 
+}
+
+
+
+/** 
+ * Calculate price of all the items in cart
+ * with reduce method
+ *
+ */
+
+async function getTotalPrice() {
+
+    //Select total price container
+    let totalPriceContainer = document.querySelector("#totalPrice");
+
+    //Create an empty array
+    let priceArray = [];
+
+    //Create a loop to calculate each item total price
+     for (let a of cart) {
+        //Set the variables 
+        let idArticle = a.id;
+        let quantityArticle = parseInt(a.quantity);
+    
+        //Fetch the price from  API
+        let article = await fetchSofa(idArticle);
+        let priceArticle = parseInt(article.price);
+    
+        //Calculate the total price by articles
+        totalPriceByArticle = priceArticle * quantityArticle;
+    
+        //Push this number into an array
+        priceArray.push(totalPriceByArticle);
+    
+    };
+
+    //Reduce the array in a sum
+    let totalPriceSum = priceArray.reduce((c, d) => c + d, 0);
+
+    //Display the price with the right formating
+    totalPriceContainer.textContent = new Intl.NumberFormat('fr-FR').format(totalPriceSum);
+}
+
+
+//-------------------------------------- END OF DISPLAY TOTAL PRICE AND QTY --------------------------------------
+
+
+
 //-------------------------------------- DISPLAY PRODUCT IN CART --------------------------------------
 
 /** 
  * Fetch right sofa according to the ID
  */
-async function fetchSofa(idSofa) {
+ async function fetchSofa(idSofa) {
 
     //Fetch Sofa according to ID
     const fetchSofa = await fetch(`http://localhost:3000/api/products/${idSofa}`, {
@@ -177,102 +267,7 @@ function displayCart() {
 }
 
 
-
 //-------------------------------------- END OF DISPLAY CART --------------------------------------
-
-
-
-
-
-//-------------------------------------- DISPLAY TOTAL PRICE AND QTY --------------------------------------
-
-/** 
- * Calculate quantity of all items in cart 
- * with reduce method
- *
- */
-
-function getTotalQuantity() {
-
-    //Select total quantity container
-    let totalQuantity = document.querySelector("#totalQuantity");
-
-    //Calculate quantity with reduce function
-    const totalArticles = cart.reduce((a, b) => a + b.quantity, 0);
-
-    //Display number 
-    totalQuantity.textContent = totalArticles;
-
-    //Return number to use in displayQtyInNavBar()
-    return totalArticles;
-}
-
-
-/** 
- * Put total quantity number next to the cart icon
- * For it to work on all pages, it should be put in a separate JS file and called on each page
- *
- */
-
-function displayQtyInNavBar() {
-    
-    //Select nav bar
-    let navBar = document.querySelectorAll("nav a li");
-
-    //Select second li item of nav bar
-    let cartIcon = navBar[1];
-
-    
-    let totalInCartIcon = document.createElement("span");
-    cartIcon.append(totalInCartIcon);
-    totalInCartIcon.textContent = "(" + getTotalQuantity() + ")";
-        
-}
-
-
-
-/** 
- * Calculate price of all the items in cart
- * with reduce method
- *
- */
-
-async function getTotalPrice() {
-
-    //Select total price container
-    let totalPriceContainer = document.querySelector("#totalPrice");
-
-    //Create an empty array
-    let priceArray = [];
-
-    //Create a loop to calculate each item total price
-     for (let a of cart) {
-        //Set the variables 
-        let idArticle = a.id;
-        let quantityArticle = parseInt(a.quantity);
-    
-        //Fetch the price from  API
-        let article = await fetchSofa(idArticle);
-        let priceArticle = parseInt(article.price);
-    
-        //Calculate the total price by articles
-        totalPriceByArticle = priceArticle * quantityArticle;
-    
-        //Push this number into an array
-        priceArray.push(totalPriceByArticle);
-    
-    };
-
-    //Reduce the array in a sum
-    let totalPriceSum = priceArray.reduce((c, d) => c + d, 0);
-
-    //Display the price with the right formating
-    totalPriceContainer.textContent = new Intl.NumberFormat('fr-FR').format(totalPriceSum);
-}
-
-
-//-------------------------------------- END OF DISPLAY TOTAL PRICE AND QTY --------------------------------------
-
 
 
 //-------------------------------------- REMOVE OR UPDATE QUANTITY --------------------------------------
@@ -341,6 +336,7 @@ function updateQuantity(event) {
     if(article && (articleNewQuantity > 0 && articleNewQuantity <= 100)) {
         article.quantity = articleNewQuantity;
         localStorage.setItem("cart", JSON.stringify(cart));
+
         getTotalQuantity();
       
         getTotalPrice();
@@ -367,15 +363,10 @@ function updateQuantity(event) {
 //-------------------------------------- FORM MANAGEMENT ----------------------------------------------------------
 
 //Select the differents inputs of the form
-
 let firstName = document.querySelector("#firstName");
-
 let lastName = document.querySelector("#lastName");
-
 let adress = document.querySelector("#address");
-
 let city = document.querySelector("#city");
-
 let email = document.querySelector("#email")
 
 
