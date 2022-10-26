@@ -1,13 +1,16 @@
 
-//Get cart
+//-------------------------------------- GLOBAL VARIABLES --------------------------------------
+
+//Get cart and put it in a variable
 let cart = JSON.parse(localStorage.getItem("cart"));
 
-let cartItems = document.querySelector("#cart__items");
 
+//-------------------------------------- END OF GLOBAL VARIABLES --------------------------------------
 
 
 //-------------------------------------- DISPLAY TOTAL PRICE AND QTY --------------------------------------
 
+/////Variables
 //Create a span to display quantity near cart icon in nav bar
 //Select nav bar
 let navBar = document.querySelectorAll("nav a li");
@@ -96,6 +99,11 @@ async function getTotalPrice() {
 
 
 //-------------------------------------- DISPLAY PRODUCT IN CART --------------------------------------
+
+////// Variables
+//Select the container of the cart items
+let cartItems = document.querySelector("#cart__items");
+
 
 /** 
  * Fetch right sofa according to the ID
@@ -260,10 +268,6 @@ function displayCart() {
         orderForm.textContent = "";
     }
 
-
-
-    
-
 }
 
 
@@ -307,6 +311,7 @@ function deleteArticle(event) {
             localStorage.removeItem("cart");  
         }
 
+        //Call functions to update totals
         getTotalQuantity();
 
         displayQtyInNavBar();
@@ -325,27 +330,33 @@ function updateQuantity(event) {
     //Select corresponding article
     let modifiedArticle = event.target.closest("article");      
 
+    //Get the ID and color of the article
     let modifiedArticleId = modifiedArticle.getAttribute("data-id");
     let modifiedArticleColor  = modifiedArticle.getAttribute("data-color");
 
+    //Find in the LS the article corresponding to the ID and color of the article
     let article = cart.find(i => (i.id == modifiedArticleId) && (i.color == modifiedArticleColor));
 
-
+    //Get the new quantity in the input
     let articleNewQuantity = parseInt(event.target.value);
 
+    //If the new quantity is between 1 and 100, update quantity in LS and call functions to calculate totals
     if(article && (articleNewQuantity > 0 && articleNewQuantity <= 100)) {
         article.quantity = articleNewQuantity;
         localStorage.setItem("cart", JSON.stringify(cart));
-
+    
         getTotalQuantity();
       
         getTotalPrice();
 
         displayQtyInNavBar();
     }
+    //If new quantity is 0 and less, delete the article 
     else if(articleNewQuantity <=0){
         deleteArticle(event);
     }
+
+    //If new quantity is superior at 100, alert the user and put back the previous quantity
     else {
         alert("Merci de renseigner une quantité comprise entre 1 et 100 !");
         event.target.value = article.quantity;
@@ -362,137 +373,177 @@ function updateQuantity(event) {
 
 //-------------------------------------- FORM MANAGEMENT ----------------------------------------------------------
 
+let orderForm = document.querySelector(".cart__order__form");
+
 //Select the differents inputs of the form
 let firstName = document.querySelector("#firstName");
 let lastName = document.querySelector("#lastName");
-let adress = document.querySelector("#address");
+let address = document.querySelector("#address");
 let city = document.querySelector("#city");
 let email = document.querySelector("#email")
 
+//Create values for input
+let firstNameValue, lastNameValue, addressValue, cityValue, emailValue;
 
 //Create a set of regex rules
-var regexClassic = new RegExp(/^[a-z çàâäéèêëïîôöùûüÿæœ -]{2,90}$/, "i");
-var regexAdress = new RegExp(/^[a-z çàâäéèêëïîôöùûüÿæœ '",;\- \d]{2,125}$/, "i");
-var regexEmail = new RegExp(/^[\w\-.]+@[\w\-.]+\.[\w]{2,6}$/, "i");
+let regexClassic = new RegExp(/^[a-z çàâäéèêëïîôöùûüÿæœ -]{2,90}$/, "i");
+let regexAddress = new RegExp(/^[a-z çàâäéèêëïîôöùûüÿæœ '",;\- \d]{2,125}$/, "i");
+let regexEmail = new RegExp(/^[\w-\.]+@[\w-\.]+\.[\w]{2,6}$/, "i");
 
 
-//Create the values of input
-let fistNameValue, lastNameValue, adressValue, cityValue, emailValue;
-
-
-//List to each input to see if they're correct
-//First Name
-firstName.addEventListener("blur", (e)=> {
-
-    let errorMsgFirstName = document.querySelector("#firstNameErrorMsg");
-
-    if (e.target.value.match(regexClassic)) {
-        firstName.style.border = "2px solid green";
-        errorMsgFirstName.textContent = "";
-        let firstNameValue = e.target.value;
-        console.log(firstNameValue);
-
+/** 
+ * Check each input to see if they match the regex
+ *
+ */
+function checkFirstName() {
+        if (firstName.value.match(regexClassic)) {
+        firstName.style.border = "2px solid rgba(42, 18, 206, 0.9)";
+        firstNameErrorMsg.textContent = "";
+        firstNameValue = firstName.value;
+        
     } else {
         firstName.style.border = "2px solid red";
-        errorMsgFirstName.textContent = "Le prénom renseigné contient des caractères non autorisés ou ne respecte pas la limite de taille (entre 2 et 35 caractères)."
+        firstNameErrorMsg.textContent = "Le prénom ne doit pas contenir de numéros ou de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
+        firstName = false;
     }
-});
+    console.log(firstNameValue);
+};
 
-//Last Name
-lastName.addEventListener("blur", (e)=> {
-
-    let errorMsgLastName = document.querySelector("#lastNameErrorMsg");
-
-    if (e.target.value.match(regexClassic)) {
-        lastName.style.border = "2px solid green";
-        errorMsgLastName.textContent = "";
-        let lastNameValue = e.target.value;
-        console.log(lastNameValue);
-
+function checkLastName() {
+    if (lastName.value.match(regexClassic)) {
+        lastName.style.border = "2px solid rgba(42, 18, 206, 0.9)";
+        lastNameErrorMsg.textContent = "";
+        lastNameValue = lastName.value;
+        
     } else {
         lastName.style.border = "2px solid red";
-        errorMsgLastName.textContent = "Le nom renseigné contient des caractères non autorisés ou ne respecte pas la limite de taille (entre 2 et 35 caractères)."
+        lastNameErrorMsg.textContent = "Le nom ne doit pas contenir de numéros ou de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
+        lastName = false;
     }
-});
+    console.log(lastNameValue);
+};
 
-//Adress
-adress.addEventListener("blur", (e)=> {
-
-    let errorMsgAdress = document.querySelector("#addressErrorMsg");
-
-    if (e.target.value.match(regexAdress)) {
-        adress.style.border = "2px solid green";
-        errorMsgAdress.textContent = "";
-        let adressValue = e.target.value;
-        console.log(adressValue);
-
+function checkAddress() {
+    if (address.value.match(regexAddress)) {
+        address.style.border = "2px solid rgba(42, 18, 206, 0.9)";
+        addressErrorMsg.textContent = "";
+        addressValue = address.value;
+        
     } else {
-        adress.style.border = "2px solid red";
-        errorMsgAdress.textContent = "L'adresse renseignée contient des caractères non autorisés."
+        address.style.border = "2px solid red";
+        addressErrorMsg.textContent = "L'adresse ne doit pas contenir de caractères spéciaux et avoir une taille comprise entre 2 et 125 caractères.";
+        addressValue = false;
     }
-});
+    console.log(addressValue);
+};
 
-//Ville
-city.addEventListener("blur", (e)=> {
-
-    let errorMsgCity = document.querySelector("#cityErrorMsg");
-
-    if (e.target.value.match(regexAdress)) {
-        city.style.border = "2px solid green";
-        errorMsgCity.textContent = "";
-        let cityValue = e.target.value;
-        console.log(cityValue);
-
+function checkCity() {
+    if (city.value.match(regexClassic)) {
+        city.style.border = "2px solid rgba(42, 18, 206, 0.9)";
+        cityErrorMsg.textContent = "";
+        cityValue = city.value;
+        
     } else {
-        adress.style.border = "2px solid red";
-        errorMsgCity.textContent = "La ville renseignée contient des caractères non autorisés."
+        city.style.border = "2px solid red";
+        cityErrorMsg.textContent = "La ville ne doit pas contenir de numéros et de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
+        cityValue = false;
     }
-});
+    console.log(cityValue);
+};
 
-
-//Email
-email.addEventListener("blur", (e)=> {
-
-    let errorMsgEmail = document.querySelector("#emailErrorMsg");
-
-    if (e.target.value.match(regexEmail)) {
-        email.style.border = "2px solid green";
-        errorMsgEmail.textContent = "";
-        let emailValue = e.target.value;
-        console.log(emailValue);
-
+function checkEmail() {
+    if (email.value.match(regexEmail)) {
+        email.style.border = "2px solid rgba(42, 18, 206, 0.9)";
+        emailErrorMsg.textContent = "";
+        emailValue = email.value;
+        
     } else {
         email.style.border = "2px solid red";
-        errorMsgEmail.textContent = "Le champ renseigné ne correspond pas au format valide d'une adresse email : texte@nomdomaine.txt"
+        emailErrorMsg.textContent = "Le champ renseigné ne correspond pas au format valide d'une adresse email : texte@nomdomaine.txt !";
+        emailValue = false;        
     }
-});
+    console.log(emailValue);
+};
+
+/** 
+ * Create a personnalized constructor for the client that contains its personnal info
+ *
+ */
+function Client() {
+    this.firstName = firstNameValue;
+    this.lastName = lastNameValue;
+    this.address = addressValue;
+    this.city = cityValue;
+    this.email = emailValue;
+}
 
 
+/** 
+ * Get product ID in an array to send //OK
+ *
+ */
+function getOrderedProductId() {
 
-//Create a personnalized constructor for the client that contains its personnal info and its order
-//Or just an object ?
-// function Client(firstName, lastName, adress, city, email, order) {
-//     this.firstName = firstName;
-//     this.lastName = lastName;
-//     this.adress = adress;
-//     this.city = city;
-//     this.email = email;
+    let productIdArray = [];
 
-//     this.order = order;
+    for (let product of cart) {
+        let productId = product.id;
+        productIdArray.push(productId);
+    }
+
+    console.log(productIdArray);
+    return productIdArray;
+}
+
+
+/** 
+ * Post Order
+ *
+ */
+
+
+/** 
+ * Confirm order
+ *
+ */
+//  confirmOrder()
+//  function confirmOrder() {
+//     //Select Button
+//     let orderBtn = document.querySelector("#order");
+//     console.log(orderBtn)
+
+//     //Change Button text
+//     orderBtn.textContent = "Commande validée (merci de patienter) !";
+
+//     //Set timer to return to previous state
+//     setTimeout(function(){orderBtn.textContent = "Commander !";},2000)
+
 // }
 
-//Select Btn
-let orderBtn = document.querySelector("#order");
+//Add an event on form to submit the order
+orderForm.addEventListener("submit", (event)=> {
+    event.preventDefault();
 
-//Add a listener function to the btn
-// orderBtn.addEventListener("click", ()=> {
-//     let client = new Client(
-//         document.querySelector("#firstName").value,
-//         document.querySelector("#lastName").value,
-//         document.querySelector("#address").value,
-//         document.querySelector("#city").value,
-//         document.querySelector("#email").value,
-//         )
-//     console.log(client);
-// })
+    //Run all the checks on input
+    checkFirstName();
+    checkLastName();
+    checkAddress();
+    checkCity();
+    checkEmail();
+
+    if ((emailValue == false) || (cityValue == false) || (lastNameValue == false) || (firstNameValue == false) || (addressValue == false)) {
+        alert("Merci de vérifier et corriger votre formulaire de commande !")
+    }
+
+    else {
+        let clientOrder = new Client;
+        getOrderedProductId();
+        console.log(clientOrder);
+        //posttheorder
+        //deletekeyinlocalstorage
+        
+    }
+
+})
+
 
