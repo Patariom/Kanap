@@ -4,6 +4,7 @@
 //Get cart and put it in a variable
 let cart = JSON.parse(localStorage.getItem("cart"));
 
+
 //-------------------------------------- END OF GLOBAL VARIABLES --------------------------------------
 
 
@@ -59,6 +60,10 @@ let cart = JSON.parse(localStorage.getItem("cart"));
     //Put the request result in a variable
     let response =  await req.json();
     
+    //Stock name of client in LS to display it in confirmation page
+    let client = response.contact.firstName + " " + response.contact.lastName;
+    localStorage.setItem("client", client);
+
     //Redirect client to confirmation page
     document.location.href = `confirmation.html?orderid=${response.orderId}`
     }
@@ -174,6 +179,7 @@ function displayCart() {
 
 
     if (cart) {
+
         cart.forEach(async i => {
 
             //Select and Fetch Sofa according to ID
@@ -557,9 +563,6 @@ orderForm.addEventListener("submit", (event) => {
         //Post this data object to API and redirect client to confirmation page
         console.log(data);
         postOrder(data);
-
-        //Clear the local Storage
-        localStorage.removeItem("cart");
 
     }
 
