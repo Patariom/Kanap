@@ -60,11 +60,7 @@ async function postOrder(order) {
         //Put the request result in a variable
         let response = await req.json();
 
-        //Stock name of client in LS to display it in confirmation page
-        let client = response.contact.firstName + " " + response.contact.lastName;
-        localStorage.setItem("client", client);
-
-        //Redirect client to confirmation page
+         //Redirect client to confirmation page
         document.location.href = `confirmation.html?orderid=${response.orderId}`
     }
 }
@@ -290,6 +286,13 @@ function displayCart() {
         getTotalPrice();
 
     } else {
+        displayEmptyCart();
+    }
+
+}
+
+
+function displayEmptyCart() {
         //Display a message saying that cart is empty
         let emptyBasket = document.querySelector("h1")
         emptyBasket.textContent = "Votre panier est vide :(";
@@ -301,10 +304,7 @@ function displayCart() {
         //Hide order form
         let orderForm = document.querySelector(".cart__order");
         orderForm.style.display = "none";
-    }
-
 }
-
 //-------------------------------------- END OF DISPLAY CART --------------------------------------
 
 
@@ -339,6 +339,7 @@ function deleteArticle(event) {
         //If cart is empty, remove the cart key in local storage
         if (cart.length == 0) {
             localStorage.removeItem("cart");
+            displayEmptyCart();
         }
 
         //Call functions to update totals
@@ -508,6 +509,7 @@ function Client() {
     this.city = cityValue;
     this.email = emailValue;
 }
+
 
 
 /** 
