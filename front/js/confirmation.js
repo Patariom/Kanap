@@ -1,8 +1,13 @@
+//-------------------------------------- GLOBAL VARIABLES --------------------------------------
+
 //Get the confirmation ID from the URL
 let params = (new URL(document.location)).searchParams
 let orderIdNumber = params.get("orderid");
-console.log(orderIdNumber);
 
+//-------------------------------------- END OF GLOBAL VARIABLES --------------------------------------
+
+
+//-------------------------------------- CART MANAGEMENT --------------------------------------
 
 /** 
  * Remove any key from Local Storage
@@ -10,6 +15,11 @@ console.log(orderIdNumber);
  function emptyCart() {
     localStorage.clear();
 }
+
+//-------------------------------------- END OF CART MANAGEMENT --------------------------------------
+
+
+//-------------------------------------- DISPLAY MANAGEMENT --------------------------------------
 
 /**
  * Display client orderID and name on the page
@@ -34,7 +44,6 @@ function displayConfirmationMessage() {
     }
 }
 
-
 /**
  * Create a function to redirect the client if he/she goes to the confirmation page without an order ID
  * 
@@ -55,6 +64,7 @@ function confirmationPageDisplay() {
 
 }
 
+//-------------------------------------- END OF DISPLAY MANAGEMENT --------------------------------------
 
 
 
