@@ -1,9 +1,15 @@
 
-//-------------------------------------- GLOBAL VARIABLES --------------------------------------
+//-------------------------------------- CART MANAGEMENT --------------------------------------
 
 //Get cart and put it in a variable
 let cart = JSON.parse(localStorage.getItem("cart"));
 
+/** 
+ * Remove any key from Local Storage
+ */
+function emptyCart() {
+    localStorage.clear();
+}
 
 //-------------------------------------- END OF GLOBAL VARIABLES --------------------------------------
 
@@ -338,7 +344,7 @@ function deleteArticle(event) {
 
         //If cart is empty, remove the cart key in local storage
         if (cart.length == 0) {
-            localStorage.removeItem("cart");
+            emptyCart();
             displayEmptyCart();
         }
 
@@ -511,7 +517,6 @@ function Client() {
 }
 
 
-
 /** 
  * Get product ID in an array to send 
  *
@@ -567,7 +572,6 @@ orderForm.addEventListener("submit", (event) => {
         postOrder(data);
 
     }
-
 });
 
 

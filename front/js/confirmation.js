@@ -4,6 +4,12 @@ let orderIdNumber = params.get("orderid");
 console.log(orderIdNumber);
 
 
+/** 
+ * Remove any key from Local Storage
+ */
+ function emptyCart() {
+    localStorage.clear();
+}
 
 /**
  * Display client orderID and name on the page
@@ -21,9 +27,6 @@ function displayConfirmationMessage() {
     if (client) {
         //Display the confirmation message with the name and number of client
         confirmationContainer.innerHTML = `<p>Merci ${client} ! <br> Commande validée ! <br>Votre numéro de commande est : <br> ${orderIdNumber}</p>`;
-
-        //Clear the local Storage
-        localStorage.clear();
 
         //If client refreshes the page, local storage is cleared and there is no name anymore so we adapt the message
     } else {
@@ -44,8 +47,7 @@ function confirmationPageDisplay() {
 
         displayConfirmationMessage();
 
-        //Clear the local Storage
-        localStorage.clear();
+        emptyCart()
         
     } else {
         document.location.href = `index.html`
