@@ -14,7 +14,7 @@ let cart = JSON.parse(localStorage.getItem("cart"));
  * Fetch right sofa from API according to the ID
  * It will be used to get all informations about sofa that weren't put in the LS 
  */
- async function fetchSofa(idSofa) {
+async function fetchSofa(idSofa) {
 
     //Fetch Sofa according to ID
     const fetchSofa = await fetch(`http://localhost:3000/api/products/${idSofa}`, {
@@ -39,33 +39,33 @@ let cart = JSON.parse(localStorage.getItem("cart"));
  * Post Order and get order confirmation ID
  *
  */
- async function postOrder(order) {
+async function postOrder(order) {
 
     const req = await fetch("http://localhost:3000/api/products/order", {
-        method: "POST", 
+        method: "POST",
         headers: {
-            "Content-Type" : "application/JSON"
+            "Content-Type": "application/JSON"
         },
-        body: JSON.stringify(order),  
+        body: JSON.stringify(order),
     });
 
     //If the request returns an error
-    if(!req.ok) {
-    alert("Un problème est survenu, merci de réessayer !");
+    if (!req.ok) {
+        alert("Un problème est survenu, merci de réessayer !");
 
-    //If the request is working
+        //If the request is working
     } else {
-    console.log("La commande a bien été envoyée");
+        console.log("La commande a bien été envoyée");
 
-    //Put the request result in a variable
-    let response =  await req.json();
-    
-    //Stock name of client in LS to display it in confirmation page
-    let client = response.contact.firstName + " " + response.contact.lastName;
-    localStorage.setItem("client", client);
+        //Put the request result in a variable
+        let response = await req.json();
 
-    //Redirect client to confirmation page
-    document.location.href = `confirmation.html?orderid=${response.orderId}`
+        //Stock name of client in LS to display it in confirmation page
+        let client = response.contact.firstName + " " + response.contact.lastName;
+        localStorage.setItem("client", client);
+
+        //Redirect client to confirmation page
+        document.location.href = `confirmation.html?orderid=${response.orderId}`
     }
 }
 
@@ -296,11 +296,11 @@ function displayCart() {
 
         //Hide quantity and price items
         let infoPrice = document.querySelector(".cart__price");
-        infoPrice.textContent = "";
+        infoPrice.style.display = "none";
 
         //Hide order form
         let orderForm = document.querySelector(".cart__order");
-        orderForm.textContent = "";
+        orderForm.style.display = "none";
     }
 
 }
@@ -523,7 +523,7 @@ function getOrderedProductId() {
         let productId = product.id;
         productsIdArray.push(productId);
     }
-    
+
     return productsIdArray;
 }
 
