@@ -1,14 +1,14 @@
-//-------------------------------------- DISPLAY SELECTED PRODUCT --------------------------------------
-
+//-------------------------------------- GLOBAL VARIABLES --------------------------------------
 
 //Get Sofa ID in URL
 let params = (new URL(document.location)).searchParams
 let idSofa = params.get('id');
-console.log("Le canapé sélectionné a l'ID : " + idSofa);
+// console.log("Le canapé sélectionné a l'ID : " + idSofa);
+
+//-------------------------------------- END OF GLOBAL VARIABLES --------------------------------------
 
 
-
-displaySofa();
+//-------------------------------------- FETCH PRODUCTS --------------------------------------
 
 /** 
  * Fetch right sofa according to the ID
@@ -34,9 +34,15 @@ async function fetchSofa() {
 
 }
 
+//-------------------------------------- END OF FETCH PRODUCTS --------------------------------------
+
+
+//-------------------------------------- DISPLAY PRODUCT --------------------------------------
+
 /** 
  * Display informations about selected sofa
  */
+ displaySofa();
 async function displaySofa() {
 
     //Fetch data
@@ -76,10 +82,40 @@ async function displaySofa() {
     }
 
 
-    console.log("Le canapé sélectionné est bien affiché !")
+    // console.log("Le canapé sélectionné est bien affiché !")
 
 };
 
+//-------------------------------------- END OF DISPLAY PRODUCT --------------------------------------
+
+
+//-------------------------------------- CART MANAGEMENT --------------------------------------
+
+/** 
+* Save the item to cart and confirm order
+*
+*/
+function saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart))
+    // console.log("Le produit a bien été ajouté au panier.")
+}
+
+/** 
+* Push the item to the array in Local Storage
+*
+*/
+function addToCart(cart, item) {
+    cart.push(item)
+    saveCart(cart)
+}
+
+function getCart() {
+    let cart = JSON.parse(localStorage.getItem("cart"))
+    return cart;
+}
+
+
+//-------------------------------------- END OF CART MANAGEMENT --------------------------------------
 
 
 //-------------------------------------- ADD PRODUCTS TO CART --------------------------------------
@@ -119,7 +155,7 @@ orderBtn.addEventListener("click", () => {
     //Product is valid, now we're checking if a cart already exists
     else {
 
-        let existingCart = JSON.parse(localStorage.getItem("cart"));
+        let existingCart = getCart();
 
         //If there is already a key "cart" in Local Storage
         if (existingCart) {
@@ -129,7 +165,7 @@ orderBtn.addEventListener("click", () => {
             //There's already a product with the same options
             if (foundItem != undefined) {
                 //We update the quantity
-                console.log("Un produit similaire a été trouvé dans le panier.")
+                // console.log("Un produit similaire a été trouvé dans le panier.")
                 foundItem.quantity = parseInt(foundItem.quantity += sofaOption.quantity);
 
                 //If the new quantity is more than 100, we can't proceed
@@ -140,6 +176,8 @@ orderBtn.addEventListener("click", () => {
                 //If it's less than 100, the existing entry in Local Storage is updated 
                 else {
                     saveCart(existingCart)
+                    confirmOrder();
+                    displayQtyInNavBar();
                 }
             }
 
@@ -147,6 +185,8 @@ orderBtn.addEventListener("click", () => {
             else {
                 //We add the product in the cart
                 addToCart(existingCart, sofaOption)
+                confirmOrder();
+                displayQtyInNavBar();
             }
         }
 
@@ -154,38 +194,18 @@ orderBtn.addEventListener("click", () => {
         else {
             existingCart = [];
             addToCart(existingCart, sofaOption)
+            confirmOrder();
+            displayQtyInNavBar();
         }
     }
 
 });
-
-/** 
-* Save the item to cart and confirm order
-*
-*/
-function saveCart(cart) {
-    localStorage.setItem("cart", JSON.stringify(cart))
-    console.log("Le produit a bien été ajouté au panier.")
-    confirmOrder()
-
-}
-
-/** 
-* Push the item to the array in Local Storage
-*
-*/
-function addToCart(cart, item) {
-    cart.push(item)
-    saveCart(cart)
-
-}
 
 
 /** 
 * Confirm that order is OK and reset form
 *
 */
-
 function confirmOrder() {
     //Select Button
     let addToCartConf = document.querySelector("#addToCart");
@@ -199,5 +219,42 @@ function confirmOrder() {
     //Reset form
     document.querySelector("#colors").value = "";
     document.querySelector("#quantity").value = 0;
-
 }
+
+//-------------------------------------- END OF ADD PRODUCTS TO CART --------------------------------------
+
+//-------------------------------------- DISPLAY QUANTITY IN TOP CART ICON --------------------------------------
+
+//Create a span to display quantity near cart icon in nav bar
+//Select nav bar
+let navBar = document.querySelectorAll("nav a li");
+//Select second li item of nav bar
+let cartIcon = navBar[1];
+let totalInCartIcon = document.createElement("span");
+cartIcon.append(totalInCartIcon);
+
+
+/** 
+ * Put total quantity number next to the cart icon
+ *
+ */
+displayQtyInNavBar();
+ function displayQtyInNavBar() {
+
+    let cart = getCart();
+
+    if(cart) {
+    //Calculate quantity with reduce function
+    const totalArticles = cart.reduce((a, b) => a + b.quantity, 0);
+
+    //Display the number of articles in icon
+    totalInCartIcon.textContent = "(" + totalArticles + ")";
+    }
+}
+
+//-------------------------------------- END OF DISPLAY QUANTITY IN TOP CART ICON --------------------------------------
+
+
+
+
+

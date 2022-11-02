@@ -1,3 +1,5 @@
+//-------------------------------------- DISPLAY PRODUCTS --------------------------------------
+
 displayProducts();
 
 /** 
@@ -65,3 +67,43 @@ async function displayProducts() {
     console.log("Les produits ont bien été créés !")
 
 };
+
+//-------------------------------------- END OF DISPLAY PRODUCTS --------------------------------------
+
+//-------------------------------------- CART MANAGEMENT --------------------------------------
+function getCart() {
+    let cart = JSON.parse(localStorage.getItem("cart"))
+    return cart;
+}
+//-------------------------------------- END OF CART MANAGEMENT  --------------------------------------
+
+//-------------------------------------- DISPLAY QUANTITY IN TOP CART ICON --------------------------------------
+
+//Create a span to display quantity near cart icon in nav bar
+//Select nav bar
+let navBar = document.querySelectorAll("nav a li");
+//Select second li item of nav bar
+let cartIcon = navBar[1];
+let totalInCartIcon = document.createElement("span");
+cartIcon.append(totalInCartIcon);
+
+
+/** 
+ * Put total quantity number next to the cart icon
+ *
+ */
+displayQtyInNavBar();
+ function displayQtyInNavBar() {
+
+    let cart = getCart();
+
+    if(cart) {
+    //Calculate quantity with reduce function
+    const totalArticles = cart.reduce((a, b) => a + b.quantity, 0);
+
+    //Display the number of articles in icon
+    totalInCartIcon.textContent = "(" + totalArticles + ")";
+    }
+}
+
+//-------------------------------------- END OF DISPLAY QUANTITY IN TOP CART ICON --------------------------------------
