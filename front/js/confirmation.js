@@ -1,7 +1,7 @@
 //-------------------------------------- GLOBAL VARIABLES --------------------------------------
 
 //Get the confirmation ID from the URL
-let params = (new URL(document.location)).searchParams
+let params = (new URL(document.location)).searchParams;
 let orderIdNumber = params.get("orderid");
 
 //-------------------------------------- END OF GLOBAL VARIABLES --------------------------------------
@@ -56,10 +56,10 @@ function confirmationPageDisplay() {
 
         displayConfirmationMessage();
 
-        emptyCart()
+        emptyCart();
         
     } else {
-        document.location.href = `index.html`
+        document.location.href = "index.html";
     }
 
 }
