@@ -310,11 +310,11 @@ async function displayCart() {
 
         };
 
-        // getTotalQuantity();
+        getTotalQuantity();
 
-        // displayQtyInNavBar();
+        displayQtyInNavBar();
 
-        // getTotalPrice();
+        getTotalPrice();
 
     } else {
         displayEmptyCart();
