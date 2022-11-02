@@ -1,8 +1,17 @@
 
 //-------------------------------------- CART MANAGEMENT --------------------------------------
 
-//Get cart and put it in a variable
-let cart = JSON.parse(localStorage.getItem("cart"));
+/** 
+* Fetch the cart from Local Storage
+*
+*/
+function getCart() {
+    let cart = JSON.parse(localStorage.getItem("cart"))
+    return cart;
+}
+
+//Get cart and put it in a variable which can be used in all the functions
+let cart = getCart();
 
 /** 
  * Remove any key from Local Storage
@@ -10,6 +19,20 @@ let cart = JSON.parse(localStorage.getItem("cart"));
 function emptyCart() {
     localStorage.clear();
 }
+
+/** 
+* Save the item to cart 
+*
+*/
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function sortCart(cart) {
+    cart.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    saveCart();
+}
+
 
 //-------------------------------------- END OF CART MANAGEMENT  --------------------------------------
 
@@ -174,20 +197,22 @@ let cartItems = document.querySelector("#cart__items");
  */
 displayCart();
 
-function displayCart() {
+async function displayCart() {
 
     //Select cart container
     let cartItems = document.querySelector("#cart__items");
-
+    
 
     if (cart) {
 
-        cart.forEach(async i => {
+        sortCart(cart);
 
-            //Select and Fetch Sofa according to ID
-            let idArticle = i.id;
-            let colorArticle = i.color;
-            let quantityArticle = i.quantity;
+        for await (product of cart) {    
+
+            //Select and Fetch Sofa according to ID in Local Storage
+            let idArticle = product.id;
+            let colorArticle = product.color;
+            let quantityArticle = product.quantity;
 
             let article = await fetchSofa(idArticle);
 
@@ -227,7 +252,7 @@ function displayCart() {
             //Create and Fetch the article color from LS
             let articleColor = document.createElement("p");
             articleInfoDescription.appendChild(articleColor);
-            articleColor.textContent = i.color;
+            articleColor.textContent = colorArticle;
 
             //Create and Fetch the article price from API
             let articlePrice = document.createElement("p");
@@ -283,13 +308,13 @@ function displayCart() {
                 deleteArticle(event);
             });
 
-        })
+        };
 
-        getTotalQuantity();
+        // getTotalQuantity();
 
-        displayQtyInNavBar();
+        // displayQtyInNavBar();
 
-        getTotalPrice();
+        // getTotalPrice();
 
     } else {
         displayEmptyCart();
@@ -340,7 +365,7 @@ function deleteArticle(event) {
         cart = cart.filter(i => (i.id !== deletedArticleID) || (i.color !== deletedArticleColor));
 
         //Save the cart 
-        localStorage.setItem("cart", JSON.stringify(cart));
+        saveCart();
 
         //If cart is empty, remove the cart key in local storage
         if (cart.length == 0) {
@@ -381,7 +406,7 @@ function updateQuantity(event) {
     //If the new quantity is between 1 and 100, update quantity in LS and call functions to calculate totals
     if (article && (articleNewQuantity > 0 && articleNewQuantity <= 100)) {
         article.quantity = articleNewQuantity;
-        localStorage.setItem("cart", JSON.stringify(cart));
+        saveCart();
 
         getTotalQuantity();
 
