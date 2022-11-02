@@ -30,16 +30,16 @@ async function fetchProducts() {
  */
 async function displayProducts() {
     //Fetch data
-    let product = await fetchProducts();
+    let listProducts = await fetchProducts();
 
     //Create each card
-    for (let i in product) {
+    for (let product of listProducts) {
 
         const items = document.querySelector("#items");
 
         //Create contenair a
         let productLink = document.createElement("a");
-        productLink.href = (`product.html?id=${product[i]._id}`);
+        productLink.href = (`product.html?id=${product._id}`);
         items.appendChild(productLink);
 
         //Create contenair article
@@ -49,18 +49,18 @@ async function displayProducts() {
         //Create product image
         const productImage = document.createElement("img");
         productArticle.appendChild(productImage);
-        productImage.src = product[i].imageUrl;
-        productImage.alt = product[i].altTxt;
+        productImage.src = product.imageUrl;
+        productImage.alt = product.altTxt;
 
         //Create product title
         const productTitle = document.createElement("h3");
         productArticle.appendChild(productTitle);
-        productTitle.textContent = product[i].name;
+        productTitle.textContent = product.name;
 
         //Create product description
         const productDescription = document.createElement("p");
         productArticle.appendChild(productDescription);
-        productDescription.textContent = product[i].description;
+        productDescription.textContent = product.description;
 
     };
 
