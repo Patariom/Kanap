@@ -92,7 +92,7 @@ async function displaySofa() {
 //-------------------------------------- CART MANAGEMENT --------------------------------------
 
 /** 
-* Save the item to cart and confirm order
+* Save the item to cart 
 *
 */
 function saveCart(cart) {
@@ -109,6 +109,10 @@ function addToCart(cart, item) {
     saveCart(cart)
 }
 
+/** 
+* Fetch the cart from Local Storage
+*
+*/
 function getCart() {
     let cart = JSON.parse(localStorage.getItem("cart"))
     return cart;

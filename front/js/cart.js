@@ -358,11 +358,11 @@ function deleteArticle(event) {
         let deletedArticleID = deletedArticle.getAttribute("data-id");
         let deletedArticleColor = deletedArticle.getAttribute("data-color");
 
-        //Remove the article from the DOM
-        deletedArticle.remove();
-
         //Use filter to keep only the items that don't have the same color and id
         cart = cart.filter(i => (i.id !== deletedArticleID) || (i.color !== deletedArticleColor));
+
+        //Remove the article from the DOM
+        deletedArticle.remove();
 
         //Save the cart 
         saveCart();
@@ -469,7 +469,7 @@ function checkFirstName() {
         firstNameErrorMsg.textContent = "Le prénom ne doit pas contenir de numéros ou de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
         firstNameValue = false;
     }
-    console.log(firstNameValue);
+    // console.log(firstNameValue);
 };
 
 function checkLastName() {
@@ -483,7 +483,7 @@ function checkLastName() {
         lastNameErrorMsg.textContent = "Le nom ne doit pas contenir de numéros ou de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
         lastName = false;
     }
-    console.log(lastNameValue);
+    // console.log(lastNameValue);
 };
 
 function checkAddress() {
@@ -497,7 +497,7 @@ function checkAddress() {
         addressErrorMsg.textContent = "L'adresse ne doit pas contenir de caractères spéciaux et avoir une taille comprise entre 2 et 125 caractères.";
         addressValue = false;
     }
-    console.log(addressValue);
+    // console.log(addressValue);
 };
 
 function checkCity() {
@@ -511,7 +511,7 @@ function checkCity() {
         cityErrorMsg.textContent = "La ville ne doit pas contenir de numéros et de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
         cityValue = false;
     }
-    console.log(cityValue);
+    // console.log(cityValue);
 };
 
 function checkEmail() {
@@ -525,7 +525,7 @@ function checkEmail() {
         emailErrorMsg.textContent = "Le champ renseigné ne correspond pas au format valide d'une adresse email : texte@nomdomaine.txt !";
         emailValue = false;
     }
-    console.log(emailValue);
+    // console.log(emailValue);
 };
 
 
@@ -539,6 +539,7 @@ function Client() {
     this.address = addressValue;
     this.city = cityValue;
     this.email = emailValue;
+
 }
 
 
@@ -559,6 +560,16 @@ function getOrderedProductId() {
     return productsIdArray;
 }
 
+/** 
+ * Stock name of client in LS to display it in confirmation page
+ *
+ */
+ function getClientName(contact) {
+         
+    let client = contact.firstName + " " + contact.lastName;
+    localStorage.setItem("client", client);
+
+}
 
 //Add an event on form to submit the order
 orderForm.addEventListener("submit", (event) => {
@@ -592,11 +603,15 @@ orderForm.addEventListener("submit", (event) => {
             products,
         };
 
+        getClientName(contact)
+
+
         //Post this data object to API and redirect client to confirmation page
-        console.log(data);
+        // console.log(data);
         postOrder(data);
 
     }
 });
+
 
 

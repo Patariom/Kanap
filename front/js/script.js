@@ -1,7 +1,5 @@
 //-------------------------------------- DISPLAY PRODUCTS --------------------------------------
 
-displayProducts();
-
 /** 
  * Fetch products on homepage
  * (from local API)
@@ -28,6 +26,7 @@ async function fetchProducts() {
  * Create and display products on homepage
  * (from local API)
  */
+ displayProducts();
 async function displayProducts() {
     //Fetch data
     let listProducts = await fetchProducts();
