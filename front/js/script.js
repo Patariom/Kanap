@@ -16,7 +16,7 @@ async function fetchProducts() {
     } else {
         //Products are fetched, stock them in json
         var listProducts = await fetchRequest.json();
-        console.log("Les produits ont bien été récupérés !");
+        // console.log("Les produits ont bien été récupérés !");
         return listProducts;        
     }
 
@@ -63,7 +63,7 @@ async function displayProducts() {
 
     };
 
-    console.log("Les produits ont bien été créés !")
+    // console.log("Les produits ont bien été créés !")
 
 };
 

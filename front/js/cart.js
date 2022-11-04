@@ -28,11 +28,6 @@ function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-function sortCart(cart) {
-    cart.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-    saveCart();
-}
-
 
 //-------------------------------------- END OF CART MANAGEMENT  --------------------------------------
 
@@ -204,8 +199,6 @@ async function displayCart() {
     
 
     if (cart) {
-
-        sortCart(cart);
 
         for await (product of cart) {    
 

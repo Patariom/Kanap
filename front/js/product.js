@@ -101,11 +101,21 @@ function saveCart(cart) {
 }
 
 /** 
+* Sort the cart by ID number to group type of sofa
+*
+*/
+function sortCart(cart) {
+    cart.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+}
+
+
+/** 
 * Push the item to the array in Local Storage
 *
 */
 function addToCart(cart, item) {
-    cart.push(item)
+    cart.push(item);
+    sortCart(cart);
     saveCart(cart)
 }
 
