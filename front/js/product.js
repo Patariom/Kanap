@@ -169,12 +169,12 @@ orderBtn.addEventListener("click", () => {
     //Product is valid, now we're checking if a cart already exists
     else {
 
-        let existingCart = getCart();
+        let cart = getCart();
 
         //If there is already a key "cart" in Local Storage
-        if (existingCart) {
+        if (cart) {
             //We are checking if in the existing cart, a product has already the same idea and color option
-            let foundItem = existingCart.find(p => (p.id == sofaOption.id) && (p.color == sofaOption.color));
+            let foundItem = cart.find(p => (p.id == sofaOption.id) && (p.color == sofaOption.color));
 
             //There's already a product with the same options
             if (foundItem != undefined) {
@@ -189,7 +189,7 @@ orderBtn.addEventListener("click", () => {
 
                 //If it's less than 100, the existing entry in Local Storage is updated 
                 else {
-                    saveCart(existingCart)
+                    saveCart(cart)
                     confirmOrder();
                     displayQtyInNavBar();
                 }
@@ -198,18 +198,20 @@ orderBtn.addEventListener("click", () => {
             //There's an existing cart but no similar product
             else {
                 //We add the product in the cart
-                addToCart(existingCart, sofaOption)
+                addToCart(cart, sofaOption)
                 confirmOrder();
                 displayQtyInNavBar();
+                sortCart(cart);
             }
         }
 
         //There's no key "cart" in Local Storage, we add the key and then push the order
         else {
-            existingCart = [];
-            addToCart(existingCart, sofaOption)
+            cart = [];
+            addToCart(cart, sofaOption)
             confirmOrder();
             displayQtyInNavBar();
+            sortCart(cart);
         }
     }
 
