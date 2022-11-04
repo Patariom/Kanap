@@ -154,7 +154,7 @@ orderBtn.addEventListener("click", () => {
     }
 
     //Check if order is valid with a chosen color and a quantity between 1 and 100
-    if ((sofaOption.color == "") || (sofaOption.quantity <= 0) || (sofaOption.quantity > 100)) {
+    if ((sofaOption.color == "") || (sofaOption.quantity <= 0) || (sofaOption.quantity > 100) || (isNaN(sofaOption.quantity))) {
 
         //Order is not valid : the client is alerted by a pop-up depending on the problem
         if (sofaOption.color == "") {
@@ -267,8 +267,5 @@ displayQtyInNavBar();
 }
 
 //-------------------------------------- END OF DISPLAY QUANTITY IN TOP CART ICON --------------------------------------
-
-
-
 
 
