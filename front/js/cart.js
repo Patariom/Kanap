@@ -28,6 +28,9 @@ function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
 }
 
+function sortCart(cart) {
+    cart.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+}
 
 //-------------------------------------- END OF CART MANAGEMENT  --------------------------------------
 
@@ -199,6 +202,8 @@ async function displayCart() {
     
 
     if (cart) {
+
+        sortCart(cart);
 
         for await (product of cart) {    
 
@@ -474,7 +479,7 @@ function checkLastName() {
     } else {
         lastName.style.border = "2px solid red";
         lastNameErrorMsg.textContent = "Le nom ne doit pas contenir de numéros ou de caractères spéciaux, et avoir une taille comprise entre 2 et 90 caractères.";
-        lastName = false;
+        lastNameValue = false;
     }
     // console.log(lastNameValue);
 };
@@ -577,7 +582,7 @@ orderForm.addEventListener("submit", (event) => {
     checkEmail();
 
     //If any input has a false value, then it will be circled in red thanks to the checkfunction and an alert message will be displayed
-    if ((emailValue == false) || (cityValue == false) || (lastNameValue == false) || (firstNameValue == false) || (addressValue == false)) {
+    if ((firstNameValue == false) || (lastNameValue == false) || (addressValue == false) || (cityValue == false) || (emailValue == false)) {
         alert("Merci de vérifier et corriger votre formulaire de commande !")
 
     }
