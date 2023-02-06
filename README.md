@@ -1,6 +1,6 @@
 # Kanap
 
-<img width="500" alt="ImageWebsite" src="">
+<img width="715" alt="ImageWebsite" src="https://raw.githubusercontent.com/Patariom/Kanap/main/front/images/ReadMeIllustration.PNG">
 
 ## English
 
@@ -9,14 +9,13 @@
 _This work is the fifth project of OpenClassrooms Web Developer training._  
 This repo contains the front-end and back-end of Kanap online shop.  
 Kanap is a sofa brand that used to sell only through its physical store. This online store is then their first ever.  
-The work on this repo was focused on the link with the API in the different already-constructed pages.  
+The work on this repo was focused on the link with the API, and the integration of its elements in the already-constructed pages.  
 
 ### Requirements
 
 This project needs the following tools :  
 :arrow_right: Node(v18.13.0 or up) : you can download it on [Node Website](https://nodejs.org/fr/)
-
-
+  
 ### How to install
 
 :one: Clone or download this repo 
@@ -72,12 +71,6 @@ Ce project nécessite les outils suivants :
 
 ```
 cd back
-```
-
-:two: Depuis le dossier du repo dans votre IDE, ouvrez un terminal et installez le projet :
-
-```
-npm install
 ```
 
 :three: Installez le projet à l'aide des commandes suivantes :
