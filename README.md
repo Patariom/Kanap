@@ -1,10 +1,10 @@
 # Kanap
 
-<img width="715" alt="ImageWebsite" src="https://raw.githubusercontent.com/Patariom/Kanap/main/front/images/ReadMeIllustration.PNG">
+<img alt="Simulation des différentes pages du site Kanap" src="https://github.com/Patariom/Kanap/blob/main/front/images/230207_KanapMockup.png?raw=true">
 
 ## English
 
-(click on the link to go directly to the [french version](#français))
+(cliquez sur ce lien pour consulter directement la [version française](#français))
 
 _This work is the fifth project of OpenClassrooms Web Developer training._  
 This repo contains the front-end and back-end of Kanap online shop.  
