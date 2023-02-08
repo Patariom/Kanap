@@ -51,7 +51,7 @@ You're all set !
 (click on the link to go directly to the [english version](#english))
 
 _Ce travail a été réalisé pour le projet 5 de la formation Développeur Web d'OpenClassrooms._  
-This repo contient le front-end et le backend de la boutique en ligne de la société Kanap. 
+Ce repo contient le front-end et le backend de la boutique en ligne de la société Kanap. 
 Kanap est une marque de canapés qui vendaient ces derniers uniquement en physique dans leur boutique. Ce site est donc leur première boutique en ligne.  
 Le travail sur ce repo s'est principalement concentré sur le lien avec l'API et l'intégration dynamique des différents éléments de celle-ci avec Javascript. Les pages sont déjà construites en HMTL et CSS.
 
